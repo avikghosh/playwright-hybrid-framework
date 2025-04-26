@@ -1,0 +1,45 @@
+plugins {
+    id("java")
+}
+
+group = "org.avikghosh"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation("com.microsoft.playwright:playwright:1.51.0")
+    implementation("io.cucumber:cucumber-java:7.22.1")
+    implementation("io.cucumber:cucumber-testng:7.22.1")
+    implementation("io.cucumber:cucumber-picocontainer:7.22.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
+    implementation("org.testng:testng:7.11.0")
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
+}
+
+tasks.test {
+    useTestNG()
+    testLogging {
+        showStandardStreams true
+        showExceptions true
+    }
+    systemProperties(System.getProperties())
+}
+
+tasks.register('playwrightInstall') {
+    group = 'playwright'
+    description = 'Install Playwright browsers'
+
+    doLast {
+        javaexec {
+            mainClass = 'com.microsoft.playwright.CLI'
+            classpath = sourceSets.test.runtimeClasspath
+            args = ['install']
+        }
+    }
+}
