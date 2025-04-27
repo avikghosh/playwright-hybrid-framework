@@ -6,15 +6,14 @@ import org.avikghosh.core.PlaywrightManager;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class ABTestingPage extends BasePage {
+public class StatusCodesPage extends BasePage {
 
-    private final Locator abTestingHeader = page.locator("//div[@class='example']//h3");
-
-    public ABTestingPage(PlaywrightManager playwrightManager) {
+    public StatusCodesPage(PlaywrightManager playwrightManager) {
         super(playwrightManager);
     }
+    private final Locator statusCodesHeader = page.locator("//div[@class='example']//h3");
 
     public void verifyPageIsDisplayed() {
-        assertThat(abTestingHeader).containsText("A/B Test");
+        assertThat(statusCodesHeader).containsText("Status Codes");
     }
 }

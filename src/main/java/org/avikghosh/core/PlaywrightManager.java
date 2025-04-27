@@ -4,6 +4,7 @@ import com.microsoft.playwright.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 public class PlaywrightManager {
@@ -43,6 +44,10 @@ public class PlaywrightManager {
             threadLocalPage.set(page);
             log.info("Created new Page");
         }
+        threadLocalContext.get().tracing().start(new Tracing.StartOptions()
+                .setScreenshots(true)
+                .setSources(true)
+                .setSnapshots(true));
     }
 
     public Page getPage() {
@@ -85,6 +90,8 @@ public class PlaywrightManager {
     public static void closeContextAndPage() {
         if (threadLocalContext.get() != null) {
             try {
+                threadLocalContext.get().tracing().stop(new Tracing.StopOptions()
+                        .setPath(Paths.get("build", "traces.zip")));
                 threadLocalContext.get().close();
             } catch (Exception e) {
                 log.info("Browser Context may have been already closed");
